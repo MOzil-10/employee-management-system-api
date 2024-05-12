@@ -38,4 +38,18 @@ public class EmployeeController {
         return ResponseEntity.ok(employee);
     }
 
+    //Update employee API
+    @PutMapping("{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id,@RequestBody Employee employeeDetails) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFound("Employee with ID:" + id + " does not exist"));
+
+        employee.setFirstName(employeeDetails.getFirstName());
+        employee.setLastName(employeeDetails.getLastName());
+        employee.setEmail(employeeDetails.getEmail());
+
+        Employee updatedEmployeeDetails = employeeRepository.save(employee);
+
+        return ResponseEntity.ok(updatedEmployeeDetails);
+    }
 }
